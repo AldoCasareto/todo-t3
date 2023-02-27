@@ -72,6 +72,6 @@ model Todo {
     updatedAt DateTime @default(now())
     todo      String
     status    Boolean  @default(false)
-    User      User     @relation(fields: [userId], references: [id])
+    user      User     @relation(fields: [userId], references: [id])
     userId    String
 }
