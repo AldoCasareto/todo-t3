@@ -48,24 +48,19 @@ export const todoRouter = createTRPCRouter({
         userId: ctx.session.user.id,
       },
     });
-    console.log(todos.map(({ id, todo, status }) => ({ id, todo, status })));
-    return [
-      { id: "fake", todo: "fake text", status: true },
-      { id: "fake2", todo: "fake text2", status: false },
-    ];
+    return todos.map(({ id, todo, status }) => ({ id, todo, status }));
   }),
   toggleStatus: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        status: z.boolean(),
-      })
-    )
+    .input(z.string())
     .mutation(async ({ ctx, input }) => {
-      const { id, status } = input;
+      const id = input;
+      const todo = await ctx.prisma.todo.findUnique({ where: { id } });
+      if (!todo) {
+        throw new Error("Todo not found");
+      }
       const updatedTodo = await ctx.prisma.todo.update({
         where: { id },
-        data: { status: !status },
+        data: { status: !todo.status },
       });
       return updatedTodo;
     }),
