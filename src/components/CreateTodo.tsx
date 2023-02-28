@@ -1,11 +1,16 @@
 "use client";
+import { useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { api } from "~/utils/api";
 
 const CreateTodo = () => {
   const [text, setText] = useState("");
 
-  const mutate = api.todo.createTodo.useMutation();
+  const queryClient = useQueryClient();
+
+  const mutate = api.todo.createTodo.useMutation({
+    onMutate: async (text) => await queryClient.invalidateQueries(["todos"]),
+  });
 
   const handleTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -70,7 +70,7 @@ model Todo {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
-    todo      String
+    text      String
     status    Boolean  @default(false)
     user      User     @relation(fields: [userId], references: [id])
     userId    String

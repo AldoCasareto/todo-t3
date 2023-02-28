@@ -1,17 +1,21 @@
 "use client";
 import React from "react";
+import type { Todo } from "types";
 import { api } from "~/utils/api";
 
-type Todo = {
-  todo: {
-    id: string;
-    todo: string;
-    status: boolean;
-  };
+type TodoProps = {
+  todo: Todo;
+  refetchTodos: () => void;
 };
 
-const Todo = ({ todo: { todo, id, status } }: Todo) => {
-  const mutation = api.todo.toggleStatus.useMutation();
+const TodoItem = ({ todo, refetchTodos }: TodoProps) => {
+  const { id, status, text } = todo;
+
+  const mutation = api.todo.toggleStatus.useMutation({
+    onSuccess: () => {
+      void refetchTodos();
+    },
+  });
 
   const handleToggleStatus = (id: string) => {
     mutation.mutate(id);
@@ -21,7 +25,7 @@ const Todo = ({ todo: { todo, id, status } }: Todo) => {
 
   return (
     <div className="text-white">
-      <p>{todo}</p>
+      <p>{text}</p>
       <button
         className="bg-black p-5 text-white"
         onClick={() => void handleToggleStatus(id)}
@@ -32,4 +36,4 @@ const Todo = ({ todo: { todo, id, status } }: Todo) => {
   );
 };
 
-export default Todo;
+export default TodoItem;

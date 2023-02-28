@@ -10,7 +10,7 @@ export const todoRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.todo.create({
         data: {
-          todo: input,
+          text: input,
           user: {
             connect: { id: ctx.session.user.id },
           },
@@ -48,7 +48,14 @@ export const todoRouter = createTRPCRouter({
         userId: ctx.session.user.id,
       },
     });
-    return todos.map(({ id, todo, status }) => ({ id, todo, status }));
+    return todos.map(({ id, text, status, createdAt, updatedAt, userId }) => ({
+      id,
+      text,
+      status,
+      createdAt,
+      updatedAt,
+      userId,
+    }));
   }),
   toggleStatus: protectedProcedure
     .input(z.string())

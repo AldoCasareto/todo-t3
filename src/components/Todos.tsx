@@ -1,17 +1,26 @@
 import React from "react";
 import { api } from "~/utils/api";
-import Todo from "./Todo";
+import TodoItem from "./TodoItem";
 
 const Todos = () => {
-  const { data: todos, isLoading, isError } = api.todo.fetchAll.useQuery();
+  const {
+    data: todos,
+    isLoading,
+    isError,
+    refetch: refetchTodos,
+  } = api.todo.fetchAll.useQuery();
 
   if (isLoading) return <div>Loading Todos </div>;
   if (isError) return <div>Error fetching</div>;
 
+  console.log(`todos = `, todos);
+
   return (
     <div>
       {todos
-        ? todos?.map((todo) => <Todo key={todo.id} todo={todo} />)
+        ? todos?.map((todo) => (
+            <TodoItem key={todo.id} todo={todo} refetchTodos={refetchTodos} />
+          ))
         : "Create your first Todo"}
     </div>
   );
