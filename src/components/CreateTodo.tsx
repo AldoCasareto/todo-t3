@@ -8,17 +8,16 @@ const CreateTodo = () => {
 
   const queryClient = useQueryClient();
 
-  const mutate = api.todo.createTodo.useMutation({
-    onMutate: async (text) => {
-      await mutate.mutateAsync(text);
-
-      await queryClient.invalidateQueries(["todos"]);
+  const createTodoMutation = api.todo.createTodo.useMutation({
+    onSuccess: () => {
+      setText("");
+      void queryClient.invalidateQueries();
     },
   });
 
   const handleTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate.mutate(text);
+    createTodoMutation.mutate(text);
   };
 
   console.log(text);
