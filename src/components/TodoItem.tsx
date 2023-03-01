@@ -5,7 +5,7 @@ import { api } from "~/utils/api";
 
 type TodoProps = {
   todo: Todo;
-  refetchTodos: () => void;
+  refetchTodos: () => Promise<void>;
 };
 
 const TodoItem = ({ todo, refetchTodos }: TodoProps) => {

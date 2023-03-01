@@ -9,7 +9,11 @@ const CreateTodo = () => {
   const queryClient = useQueryClient();
 
   const mutate = api.todo.createTodo.useMutation({
-    onMutate: async (text) => await queryClient.invalidateQueries(["todos"]),
+    onMutate: async (text) => {
+      await mutate.mutateAsync(text);
+
+      await queryClient.invalidateQueries(["todos"]);
+    },
   });
 
   const handleTodo = (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,13 +26,14 @@ const CreateTodo = () => {
   return (
     <div>
       <form onSubmit={handleTodo}>
-        <label htmlFor="">Todo</label>
+        <label>Todo</label>
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
           type="text"
           className="border-2 border-black"
         />
+        <button type="submit">Submit</button>
       </form>
     </div>
   );

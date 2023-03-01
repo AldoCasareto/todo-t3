@@ -13,8 +13,6 @@ const Todos = () => {
   if (isLoading) return <div>Loading Todos </div>;
   if (isError) return <div>Error fetching</div>;
 
-  console.log(`todos = `, todos);
-
   return (
     <div>
       {todos
