@@ -17,13 +17,16 @@ export const todoRouter = createTRPCRouter({
         },
       });
     }),
-  getAll: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.todo.findMany({
-      where: {
-        userId: ctx.session?.user.id,
-      },
-    });
-  }),
+  // getAll: publicProcedure.query(async ({ ctx }) => {
+  //   return await ctx.prisma.todo.findMany({
+  //     where: {
+  //       userId: ctx.session?.user.id,
+  //     },
+  //     orderBy: {
+  //       createdAt: "asc",
+  //     },
+  //   });
+  // }),
   deleteTodo: protectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
@@ -47,6 +50,7 @@ export const todoRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
       },
+      orderBy: { createdAt: "asc" },
     });
     return todos.map(({ id, text, status, createdAt, updatedAt, userId }) => ({
       id,

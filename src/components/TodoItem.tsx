@@ -1,4 +1,5 @@
 "use client";
+import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import type { Todo } from "types";
 import { api } from "~/utils/api";
@@ -11,9 +12,11 @@ type TodoProps = {
 const TodoItem = ({ todo, refetchTodos }: TodoProps) => {
   const { id, status, text } = todo;
 
+  const queryClient = useQueryClient();
+
   const mutation = api.todo.toggleStatus.useMutation({
     onSuccess: () => {
-      void refetchTodos();
+      void queryClient.invalidateQueries();
     },
   });
 
