@@ -4,7 +4,7 @@ import type { AppRouter } from "~/server/api/root";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
-type todosOutput = RouterOutput["todo"]["getAll"];
+type todosOutput = RouterOutput["todo"]["fetchAll"];
 
 export type Todo = todosOutput[number];
 

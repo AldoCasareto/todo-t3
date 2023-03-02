@@ -6,35 +6,49 @@ import { api } from "~/utils/api";
 
 type TodoProps = {
   todo: Todo;
-  refetchTodos: () => Promise<void>;
 };
 
-const TodoItem = ({ todo, refetchTodos }: TodoProps) => {
+const TodoItem = ({ todo }: TodoProps) => {
   const { id, status, text } = todo;
 
   const queryClient = useQueryClient();
 
-  const mutation = api.todo.toggleStatus.useMutation({
+  const mutationToggleStatus = api.todo.toggleStatus.useMutation({
+    onSuccess: () => {
+      void queryClient.invalidateQueries();
+    },
+  });
+
+  const mutationDelete = api.todo.deleteTodo.useMutation({
     onSuccess: () => {
       void queryClient.invalidateQueries();
     },
   });
 
   const handleToggleStatus = (id: string) => {
-    mutation.mutate(id);
+    mutationToggleStatus.mutate(id);
+  };
+
+  const handleDelete = (id: string) => {
+    mutationDelete.mutate(id);
   };
 
   const statusString = status ? "Done" : "Not Done";
 
   return (
-    <div className="text-white">
-      <p>{text}</p>
-      <button
-        className="bg-black p-5 text-white"
-        onClick={() => void handleToggleStatus(id)}
-      >
-        {statusString}
-      </button>
+    <div className="flex items-center space-x-2 space-y-1 text-sm text-white">
+      <p className={`${status ? "line-through decoration-red-600" : ""}`}>
+        {text}
+      </p>
+      <div>
+        <button
+          className="items-center rounded-lg bg-black p-1 text-white"
+          onClick={() => void handleToggleStatus(id)}
+        >
+          {statusString}
+        </button>
+        <button onClick={() => void handleDelete(id)}>Delete</button>
+      </div>
     </div>
   );
 };
