@@ -2,6 +2,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { api } from "~/utils/api";
+import { motion } from "framer-motion";
 
 const CreateTodo = () => {
   const [text, setText] = useState("");
@@ -23,7 +24,11 @@ const CreateTodo = () => {
   console.log(text);
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+    >
       <form onSubmit={handleTodo}>
         <label>Todo</label>
         <input
@@ -34,7 +39,7 @@ const CreateTodo = () => {
         />
         <button type="submit">Submit</button>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

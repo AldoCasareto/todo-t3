@@ -1,6 +1,7 @@
 import React from "react";
 import { api } from "~/utils/api";
 import TodoItem from "./TodoItem";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Todos = () => {
   const { data: todos, isLoading, isError } = api.todo.fetchAll.useQuery();
@@ -9,11 +10,20 @@ const Todos = () => {
   if (isError) return <div>Error fetching</div>;
 
   return (
-    <div>
+    <AnimatePresence>
       {todos
-        ? todos?.map((todo) => <TodoItem key={todo.id} todo={todo} />)
+        ? todos?.map((todo) => (
+            <motion.div
+              key={todo.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <TodoItem key={todo.id} todo={todo} />
+            </motion.div>
+          ))
         : "Create your first Todo"}
-    </div>
+    </AnimatePresence>
   );
 };
 
