@@ -75,4 +75,19 @@ export const todoRouter = createTRPCRouter({
       });
       return updatedTodo;
     }),
+  editTodo: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        text: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, text } = input;
+      const updateTodo = await ctx.prisma.todo.update({
+        where: { id },
+        data: { text },
+      });
+      return updateTodo;
+    }),
 });
