@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Todos from "~/components/Todos";
+import CreateTodo from "~/components/CreateTodo";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -19,7 +20,7 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Todo <span className="text-[hsl(280,100%,70%)]">App</span>
           </h1>
-          <div className="flex flex-col items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-4">
             <p className="text-center text-2xl text-white">
               {sessionData && (
                 <span>Logged in as {sessionData.user.email}</span>
@@ -32,6 +33,7 @@ const Home: NextPage = () => {
               {sessionData ? "Sign out" : "Sign in"}
             </button>
           </div>
+          <CreateTodo />
           <div>{sessionData && <Todos />}</div>
         </div>
       </main>

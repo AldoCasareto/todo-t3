@@ -29,15 +29,23 @@ const CreateTodo = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
     >
-      <form onSubmit={handleTodo}>
-        <label>Todo</label>
+      <form
+        className="flex items-center space-x-2 text-white"
+        onSubmit={handleTodo}
+      >
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
           type="text"
-          className="border-2 border-black"
+          className="rounded-lg border-2 p-2 text-black"
+          placeholder="type your todo..."
         />
-        <button type="submit">Submit</button>
+        <button
+          className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+          type="submit"
+        >
+          Submit
+        </button>
       </form>
     </motion.div>
   );
